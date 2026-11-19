@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checklist console</title>
+<style>
+:root { color-scheme: light dark; }
+body { margin: 0; }
+#checklist-console {
+  --font: ui-sans-serif, system-ui, sans-serif;
+  --radius: 2px;
+  --pad: 8px 10px;
+  --bg: #f3f4f6;
+  --surface: #ffffff;
+  --ink: #1b1e24;
+  --muted: #4e5563;
+  --line: #d8dbe2;
+  --bar: #ffffff;
+  --bar-ink: #1b1e24;
+  --ready-bg: #d7eadb;
+  --ready-ink: #1a4734;
+  --block-bg: #f8d0cb;
+  --block-ink: #6e221b;
+  --focus: #1b1e24;
+  color: var(--ink);
+  background: var(--bg);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.45;
+  min-height: 100vh;
+}
+@media (prefers-color-scheme: dark) {
+  #checklist-console:not([data-theme]) {
+    --bg: #12141a; --surface: #1c1f27; --ink: #f2f3f5; --muted: #c2c7d1; --line: #323743;
+    --bar: #1c1f27; --bar-ink: #f2f3f5; --ready-bg: #1e3328; --ready-ink: #b7d7c4;
+    --block-bg: #4a2a26; --block-ink: #f0b4ac; --focus: #f2f3f5;
+  }
+}
+#checklist-console[data-theme="light"] {
+  --bg: #f3f4f6; --surface: #ffffff; --ink: #1b1e24; --muted: #4e5563; --line: #d8dbe2;
+  --bar: #ffffff; --bar-ink: #1b1e24; --ready-bg: #d7eadb; --ready-ink: #1a4734;
+  --block-bg: #f8d0cb; --block-ink: #6e221b; --focus: #1b1e24;
+}
+#checklist-console[data-theme="dark"] {
+  --bg: #12141a; --surface: #1c1f27; --ink: #f2f3f5; --muted: #c2c7d1; --line: #323743;
+  --bar: #1c1f27; --bar-ink: #f2f3f5; --ready-bg: #1e3328; --ready-ink: #b7d7c4;
+  --block-bg: #4a2a26; --block-ink: #f0b4ac; --focus: #f2f3f5;
+}
+#checklist-console[data-style="paper"] { --font: "Iowan Old Style", Palatino, Georgia, serif; --radius: 0; --pad: 10px 12px; }
+#checklist-console[data-style="paper"]:not([data-theme]),
+#checklist-console[data-style="paper"][data-theme="light"] {
+  --bg: #f4f1ea; --surface: #fffdf8; --ink: #1c1915; --muted: #514a40; --line: #ddd6c8;
+  --bar: #1c1915; --bar-ink: #f4f1ea; --focus: #f4f1ea;
+}
+@media (prefers-color-scheme: dark) {
+  #checklist-console[data-style="paper"]:not([data-theme]) {
+    --bg: #1c1915; --surface: #2a261f; --ink: #f4f1ea; --muted: #c4bbaa; --line: #3d3830;
+    --bar: #141210; --bar-ink: #f4f1ea; --ready-bg: #1e3328; --ready-ink: #b7d7c4;
+    --block-bg: #4a2a26; --block-ink: #f0b4ac; --focus: #f4f1ea;
+  }
+}
+#checklist-console[data-style="paper"][data-theme="dark"] {
+  --bg: #1c1915; --surface: #2a261f; --ink: #f4f1ea; --muted: #c4bbaa; --line: #3d3830;
+  --bar: #141210; --bar-ink: #f4f1ea; --ready-bg: #1e3328; --ready-ink: #b7d7c4;
+  --block-bg: #4a2a26; --block-ink: #f0b4ac; --focus: #f4f1ea;
+}
+#checklist-console[data-style="signal"] { --radius: 8px; --pad: 12px 14px; }
+#checklist-console[data-style="signal"]:not([data-theme]),
+#checklist-console[data-style="signal"][data-theme="light"] {
+  --bg: #f2f5f7; --surface: #ffffff; --ink: #172026; --muted: #3e515a; --line: #d3dee3;
+  --bar: #17323c; --bar-ink: #f2f5f7; --focus: #9fd0de;
+}
+@media (prefers-color-scheme: dark) {
+  #checklist-console[data-style="signal"]:not([data-theme]) {
+    --bg: #0f161a; --surface: #182226; --ink: #e7eef1; --muted: #b7c6cd; --line: #2c3a40;
+    --bar: #0c1418; --bar-ink: #e7eef1; --ready-bg: #1e3328; --ready-ink: #b7d7c4;
+    --block-bg: #4a2a26; --block-ink: #f0b4ac; --focus: #9fd0de;
+  }
+}
+#checklist-console[data-style="signal"][data-theme="dark"] {
+  --bg: #0f161a; --surface: #182226; --ink: #e7eef1; --muted: #b7c6cd; --line: #2c3a40;
+  --bar: #0c1418; --bar-ink: #e7eef1; --ready-bg: #1e3328; --ready-ink: #b7d7c4;
+  --block-bg: #4a2a26; --block-ink: #f0b4ac; --focus: #9fd0de;
+}
+#checklist-console * { box-sizing: border-box; }
+#checklist-console .cc-sr {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+#checklist-console .cc-bar {
+  background: var(--bar); color: var(--bar-ink);
+  display: flex; flex-wrap: wrap; gap: 12px 20px; justify-content: space-between; align-items: flex-end;
+  padding: 14px 16px; border-bottom: 1px solid var(--line);
+}
+#checklist-console .cc-mark { margin: 0; font-size: 0.78rem; }
+#checklist-console .cc-bar h1 { margin: 0; font-size: 1.35rem; font-weight: 500; }
+#checklist-console .cc-choices { display: flex; flex-wrap: wrap; gap: 8px; }
+#checklist-console .cc-choice {
+  display: flex; border: 1px solid color-mix(in srgb, var(--bar-ink) 35%, transparent);
+  border-radius: var(--radius); overflow: hidden;
+}
+#checklist-console .cc-choice button {
+  background: transparent; color: var(--bar-ink); border: 0;
+  border-right: 1px solid color-mix(in srgb, var(--bar-ink) 25%, transparent);
+  font: inherit; font-size: 0.85rem; padding: 6px 10px; cursor: pointer;
+}
+#checklist-console .cc-choice button:last-child { border-right: 0; }
+#checklist-console .cc-choice button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--bar-ink) 16%, transparent); font-weight: 500;
+}
+#checklist-console button:focus-visible, #checklist-console input:focus-visible, #checklist-console tr:focus-visible {
+  outline: 2px solid var(--focus); outline-offset: 2px;
+}
+#checklist-console .cc-body { padding: 16px; }
+#checklist-console .cc-filters {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-bottom: 8px;
+}
+#checklist-console label { display: flex; flex-direction: column; gap: 4px; color: var(--muted); font-size: 0.78rem; }
+#checklist-console input {
+  background: var(--surface); color: var(--ink); border: 1px solid var(--line);
+  border-radius: var(--radius); font: inherit; font-size: 0.95rem; padding: 8px 10px; width: 100%;
+}
+#checklist-console .cc-count, #checklist-console .cc-source { margin: 0 0 8px; color: var(--muted); font-size: 0.85rem; }
+#checklist-console .cc-table-wrap { overflow-x: auto; }
+#checklist-console table { width: 100%; border-collapse: collapse; background: var(--surface); }
+#checklist-console th, #checklist-console td { border-bottom: 1px solid var(--line); padding: var(--pad); text-align: left; vertical-align: top; }
+#checklist-console th { color: var(--muted); font-size: 0.78rem; font-weight: 500; }
+#checklist-console .cc-num { text-align: right; font-variant-numeric: tabular-nums; }
+#checklist-console tbody tr { cursor: pointer; }
+#checklist-console tbody tr[aria-selected="true"] { background: color-mix(in srgb, var(--ink) 6%, var(--surface)); }
+#checklist-console .cc-state { display: inline-block; border-radius: var(--radius); font-size: 0.78rem; font-weight: 500; padding: 2px 8px; }
+#checklist-console .cc-ready { background: var(--ready-bg); color: var(--ready-ink); }
+#checklist-console .cc-blocked { background: var(--block-bg); color: var(--block-ink); }
+#checklist-console .cc-detail {
+  margin-top: 16px; background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 12px 14px;
+}
+#checklist-console .cc-detail h2 { margin: 0 0 4px; font-size: 1.05rem; font-weight: 500; }
+#checklist-console .cc-detail p { margin: 0 0 8px; }
+#checklist-console .cc-path { font-family: ui-monospace, monospace; font-size: 0.78rem; color: var(--muted); }
+#checklist-console .cc-lines { list-style: none; margin: 0; padding: 0; }
+#checklist-console .cc-lines li { border-top: 1px solid var(--line); padding: 8px 0; }
+@media (max-width: 720px) {
+  #checklist-console .cc-filters { grid-template-columns: 1fr 1fr; }
+  #checklist-console table, #checklist-console thead, #checklist-console tbody, #checklist-console tr, #checklist-console th, #checklist-console td { display: block; width: 100%; }
+  #checklist-console thead { height: 1px; overflow: hidden; position: absolute; width: 1px; }
+  #checklist-console tr { border-bottom: 1px solid var(--line); padding: 8px 0; }
+  #checklist-console td { border: 0; display: flex; justify-content: space-between; gap: 12px; text-align: right; }
+  #checklist-console td::before { content: attr(data-label); color: var(--muted); font-size: 0.78rem; }
+}
+</style>
+</head>
+<body>
+<div id="checklist-console" data-style="inventory">
+  <p class="cc-sr">Posture read from checklist files. Filter by host, quarter, benchmark, and major OS. Theme follows the browser until you choose light or dark.</p>
+  <header class="cc-bar">
+    <div>
+      <p class="cc-mark">Checklist console</p>
+      <h1>Posture</h1>
+    </div>
+    <div class="cc-choices">
+      <div class="cc-choice" role="group" aria-label="Appearance">
+        <button type="button" data-theme-choice="system" aria-pressed="true">System</button>
+        <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+        <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+      </div>
+      <div class="cc-choice" role="group" aria-label="Style">
+        <button type="button" data-style-choice="paper" aria-pressed="false">Paper</button>
+        <button type="button" data-style-choice="inventory" aria-pressed="true">Inventory</button>
+        <button type="button" data-style-choice="signal" aria-pressed="false">Signal</button>
+      </div>
+    </div>
+  </header>
+  <div class="cc-body">
+    <form class="cc-filters" id="cc-filters">
+      <label>Host <input id="cc-host" type="search" autocomplete="off" placeholder="rhel9-node1"></label>
+      <label>Quarter <input id="cc-quarter" type="search" autocomplete="off" placeholder="2026 Q4"></label>
+      <label>Benchmark <input id="cc-benchmark" type="search" autocomplete="off" placeholder="RHEL 9"></label>
+      <label>Major OS <input id="cc-os" type="search" autocomplete="off" placeholder="IOS-XE"></label>
+    </form>
+    <p class="cc-source" id="cc-source"></p>
+    <p class="cc-count" id="cc-count" role="status">Reading checklists.</p>
+    <p class="cc-empty" id="cc-empty" hidden>No checklists match. Clear a field to widen the list.</p>
+    <div class="cc-table-wrap" id="cc-table-wrap" hidden>
+      <table>
+        <thead>
+          <tr>
+            <th>Host</th><th>Quarter</th><th>Benchmark</th><th>Major OS</th><th>Handoff</th>
+            <th class="cc-num">Open</th><th class="cc-num">Not reviewed</th><th class="cc-num">Not applicable</th>
+            <th class="cc-num">Not a finding</th><th class="cc-num">Changed</th>
+          </tr>
+        </thead>
+        <tbody id="cc-rows"></tbody>
+      </table>
+    </div>
+    <section class="cc-detail" id="cc-detail" aria-live="polite" aria-label="Selected checklist" hidden></section>
+  </div>
+</div>
+<script>
+(function () {
+  var root = document.getElementById("checklist-console");
+  var rowsEl = document.getElementById("cc-rows");
+  var detail = document.getElementById("cc-detail");
+  var countEl = document.getElementById("cc-count");
+  var emptyEl = document.getElementById("cc-empty");
+  var wrapEl = document.getElementById("cc-table-wrap");
+  var sourceEl = document.getElementById("cc-source");
+  var fields = {
+    host: document.getElementById("cc-host"),
+    quarter: document.getElementById("cc-quarter"),
+    benchmark: document.getElementById("cc-benchmark"),
+    os: document.getElementById("cc-os")
+  };
+  var records = [];
+  var selected = "";
+  var themeChoice = "system";
+  var media = window.matchMedia("(prefers-color-scheme: dark)");
+
+  function dash(value) { return value === null || value === undefined ? "—" : String(value); }
+  function openText(row) {
+    if (row.open === null) return "—";
+    return row.cat1 ? row.open + " · " + row.cat1 + " CAT I" : String(row.open);
+  }
+  function stateClass(value) { return value === "Ready" ? "cc-ready" : "cc-blocked"; }
+  function applyTheme() {
+    if (themeChoice === "system") root.removeAttribute("data-theme");
+    else root.setAttribute("data-theme", themeChoice);
+  }
+  function setPressed(selector, attr, value) {
+    root.querySelectorAll(selector).forEach(function (button) {
+      button.setAttribute("aria-pressed", button.getAttribute(attr) === value ? "true" : "false");
+    });
+  }
+  function matches(row) {
+    return [
+      ["host", row.host],
+      ["quarter", row.quarter],
+      ["benchmark", row.benchmark],
+      ["os", row.os]
+    ].every(function (pair) {
+      var query = fields[pair[0]].value.trim().toLowerCase();
+      return !query || String(pair[1]).toLowerCase().indexOf(query) !== -1;
+    });
+  }
+  function recordById(id) {
+    return records.filter(function (row) { return row.id === id; })[0];
+  }
+  function renderDetail() {
+    var row = recordById(selected);
+    detail.replaceChildren();
+    if (!row) { detail.hidden = true; return; }
+    detail.hidden = false;
+    var title = document.createElement("h2");
+    title.textContent = row.host + " · " + row.benchmark;
+    var meta = document.createElement("p");
+    meta.textContent = [row.quarter, row.os, row.handoff, row.identity].filter(Boolean).join(" · ");
+    detail.appendChild(title);
+    detail.appendChild(meta);
+    if (row.path) {
+      var path = document.createElement("p");
+      path.className = "cc-path";
+      path.textContent = row.path;
+      detail.appendChild(path);
+    }
+    var list = document.createElement("ul");
+    list.className = "cc-lines";
+    (row.lines || []).forEach(function (text) {
+      var li = document.createElement("li");
+      li.textContent = text;
+      list.appendChild(li);
+    });
+    detail.appendChild(list);
+  }
+  function select(id) {
+    selected = id;
+    Array.prototype.forEach.call(rowsEl.children, function (tr) {
+      tr.setAttribute("aria-selected", tr.getAttribute("data-id") === id ? "true" : "false");
+    });
+    renderDetail();
+  }
+  function renderRows() {
+    rowsEl.replaceChildren();
+    records.forEach(function (row) {
+      var tr = document.createElement("tr");
+      tr.tabIndex = 0;
+      tr.setAttribute("data-id", row.id);
+      tr.setAttribute("aria-selected", "false");
+      var values = [row.host, row.quarter, row.benchmark, row.os, row.handoff, openText(row), dash(row.not_reviewed), dash(row.not_applicable), dash(row.not_a_finding), dash(row.changed)];
+      var labels = ["Host", "Quarter", "Benchmark", "Major OS", "Handoff", "Open", "Not reviewed", "Not applicable", "Not a finding", "Changed"];
+      values.forEach(function (value, index) {
+        var td = document.createElement("td");
+        td.setAttribute("data-label", labels[index]);
+        if (index >= 5) td.className = "cc-num";
+        if (index === 4) {
+          var chip = document.createElement("span");
+          chip.className = "cc-state " + stateClass(value);
+          chip.textContent = value;
+          td.appendChild(chip);
+        } else td.textContent = value;
+        tr.appendChild(td);
+      });
+      tr.addEventListener("click", function () { select(row.id); });
+      tr.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" || event.key === " ") { event.preventDefault(); select(row.id); }
+      });
+      rowsEl.appendChild(tr);
+    });
+  }
+  function applyFilter() {
+    var shown = 0;
+    Array.prototype.forEach.call(rowsEl.children, function (tr) {
+      var visible = matches(recordById(tr.getAttribute("data-id")));
+      tr.hidden = !visible;
+      if (visible) shown += 1;
+    });
+    countEl.textContent = "Showing " + shown + " of " + records.length;
+    emptyEl.hidden = shown !== 0;
+    wrapEl.hidden = shown === 0;
+    var current = rowsEl.querySelector('[data-id="' + selected + '"]');
+    if (!current || current.hidden) {
+      var next = Array.prototype.find.call(rowsEl.children, function (tr) { return !tr.hidden; });
+      if (next) select(next.getAttribute("data-id"));
+      else { selected = ""; renderDetail(); }
+    }
+  }
+  root.querySelectorAll("[data-theme-choice]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      themeChoice = button.getAttribute("data-theme-choice");
+      setPressed("[data-theme-choice]", "data-theme-choice", themeChoice);
+      applyTheme();
+    });
+  });
+  root.querySelectorAll("[data-style-choice]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      var style = button.getAttribute("data-style-choice");
+      root.setAttribute("data-style", style);
+      setPressed("[data-style-choice]", "data-style-choice", style);
+    });
+  });
+  Object.keys(fields).forEach(function (key) { fields[key].addEventListener("input", applyFilter); });
+  media.addEventListener("change", function () { if (themeChoice === "system") applyTheme(); });
+
+  fetch("/api/posture").then(function (response) {
+    if (!response.ok) throw new Error("status " + response.status);
+    return response.json();
+  }).then(function (payload) {
+    records = payload.rows || [];
+    sourceEl.textContent = "Reading " + (payload.root || "the checklist tree");
+    renderRows();
+    applyFilter();
+  }).catch(function () {
+    countEl.textContent = "The checklist tree could not be read. Restart the console and try again.";
+  });
+})();
+</script>
+</body>
+</html>
