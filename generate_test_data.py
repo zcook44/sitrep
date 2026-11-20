@@ -13,6 +13,18 @@ from pathlib import Path
 LINUX = "linux"
 NETWORK = "network"
 
+# Benchmark version and release, written the way a CKLB carries them:
+# version is the STIG version, release_info is "Release: N Benchmark Date: ...".
+RELEASES = {
+    "RHEL_9_STIG": (2, 5),
+    "RHEL_8_STIG": (2, 2),
+    "RHEL_10_STIG": (1, 1),
+    "Cisco_IOS_XE_Switch_L2S_STIG": (3, 2),
+    "Cisco_IOS_XE_Switch_NDM_STIG": (3, 6),
+    "Cisco_IOS_Switch_L2S_STIG": (3, 3),
+    "Cisco_NX-OS_Switch_L2S_STIG": (3, 4),
+}
+
 HOSTS = [
     {"host": "rhel9-node1", "stig": "RHEL_9_STIG", "os": "RHEL 9", "kind": LINUX, "fqdn": "rhel9-node1.example.test", "ip": "192.0.2.21", "role": "node"},
     {"host": "rhel9-node2", "stig": "RHEL_9_STIG", "os": "RHEL 9", "kind": LINUX, "fqdn": "rhel9-node2.example.test", "ip": "192.0.2.22", "role": "node"},
@@ -117,6 +129,7 @@ def checklist(spec, quarter, rows, note):
         "Cisco_IOS_Switch_L2S_STIG": "Cisco IOS Switch L2S STIG",
         "Cisco_NX-OS_Switch_L2S_STIG": "Cisco NX-OS Switch L2S STIG",
     }[spec["stig"]]
+    version, release = RELEASES[spec["stig"]]
     rules = []
     for row in rows:
         rules.append({
@@ -143,6 +156,8 @@ def checklist(spec, quarter, rows, note):
         "stigs": [{
             "stig_id": spec["stig"],
             "stig_name": name,
+            "version": str(version),
+            "release_info": f"Release: {release} Benchmark Date: 30 Sep 2026",
             "size": len(rules),
             "rules": rules,
         }],
@@ -158,10 +173,12 @@ def main():
     expected = {"2026-q3": [], "2026-q4": []}
     for spec in HOSTS:
         for quarter in ("2026-q3", "2026-q4"):
+            version, release = RELEASES[spec["stig"]]
             expected[quarter].append({
                 "host": spec["host"],
                 "benchmark_id": spec["stig"],
                 "os": spec["os"],
+                "release": f"V{version}R{release}",
             })
             mutated = dict(spec)
             note = ""

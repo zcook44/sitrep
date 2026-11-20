@@ -1,0 +1,14 @@
+[Container]
+Image=localhost/sitrep:latest
+ContainerName=sitrep
+PublishPort=8787:8780
+Environment=CHECKLIST_ROOT=/data
+EnvironmentFile=%h/sitrep/console.env
+Volume=%h/sitrep/completed_ckl:/data:ro,Z
+Volume=/etc/localtime:/host/localtime:ro
+
+[Service]
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

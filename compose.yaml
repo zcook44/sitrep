@@ -1,5 +1,13 @@
+name: sitrep
+
 services:
-  console:
+  sitrep:
     build: .
+    image: sitrep
+    container_name: sitrep
     ports:
       - "8787:8780"
+    volumes:
+      - /run/dbus/system_bus_socket:/run/dbus/system_bus_socket
+      - /run/systemd:/run/systemd:ro
+      - /etc/localtime:/host/localtime:ro

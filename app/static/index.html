@@ -3,185 +3,237 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Checklist console</title>
+<title>Sitrep</title>
 <style>
 :root { color-scheme: light dark; }
 body { margin: 0; }
-#checklist-console {
-  --font: ui-sans-serif, system-ui, sans-serif;
-  --radius: 2px;
-  --pad: 8px 10px;
-  --bg: #f3f4f6;
-  --surface: #ffffff;
-  --ink: #1b1e24;
-  --muted: #4e5563;
-  --line: #d8dbe2;
-  --bar: #ffffff;
-  --bar-ink: #1b1e24;
-  --ready-bg: #d7eadb;
-  --ready-ink: #1a4734;
-  --block-bg: #f8d0cb;
-  --block-ink: #6e221b;
-  --focus: #1b1e24;
+#sitrep {
+  --bg: #e1e2e7;
+  --surface: #e9e9ed;
+  --ink: #3760bf;
+  --muted: #4a5680;
+  --line: #c4c8da;
+  --bar: #d0d5e3;
+  --bar-ink: #3760bf;
+  --ready-bg: #e4eadc;
+  --ready-ink: #4d6244;
+  --block-bg: #ead6dc;
+  --block-ink: #8a4d5c;
+  --focus: #2e7de9;
+  --card: #e9e9ed;
+  --card-on: #c9d9f6;
+  --mix-open: #b07d8a;
+  --mix-nr: #a8946e;
+  --mix-na: #7d93b8;
+  --mix-naf: #7d9a84;
   color: var(--ink);
   background: var(--bg);
-  font-family: var(--font);
+  font-family: ui-sans-serif, system-ui, sans-serif;
   font-size: 15px;
   line-height: 1.45;
   min-height: 100vh;
 }
 @media (prefers-color-scheme: dark) {
-  #checklist-console:not([data-theme]) {
-    --bg: #12141a; --surface: #1c1f27; --ink: #f2f3f5; --muted: #c2c7d1; --line: #323743;
-    --bar: #1c1f27; --bar-ink: #f2f3f5; --ready-bg: #1e3328; --ready-ink: #b7d7c4;
-    --block-bg: #4a2a26; --block-ink: #f0b4ac; --focus: #f2f3f5;
+  #sitrep:not([data-theme]) {
+    --bg: #1a1b26;
+    --surface: #24283b;
+    --ink: #c0caf5;
+    --muted: #a9b1d6;
+    --line: #3b4261;
+    --bar: #16161e;
+    --bar-ink: #c0caf5;
+    --ready-bg: #24302c;
+    --ready-ink: #8aa892;
+    --block-bg: #33282c;
+    --block-ink: #c4a0a8;
+    --focus: #7aa2f7;
+    --card: #292e42;
+    --card-on: #2f406e;
+    --mix-open: #8d6670;
+    --mix-nr: #8a7b5c;
+    --mix-na: #6a7894;
+    --mix-naf: #6d8474;
   }
 }
-#checklist-console[data-theme="light"] {
-  --bg: #f3f4f6; --surface: #ffffff; --ink: #1b1e24; --muted: #4e5563; --line: #d8dbe2;
-  --bar: #ffffff; --bar-ink: #1b1e24; --ready-bg: #d7eadb; --ready-ink: #1a4734;
-  --block-bg: #f8d0cb; --block-ink: #6e221b; --focus: #1b1e24;
+#sitrep[data-theme="light"] {
+  --bg: #e1e2e7;
+  --surface: #e9e9ed;
+  --ink: #3760bf;
+  --muted: #4a5680;
+  --line: #c4c8da;
+  --bar: #d0d5e3;
+  --bar-ink: #3760bf;
+  --ready-bg: #e4eadc;
+  --ready-ink: #4d6244;
+  --block-bg: #ead6dc;
+  --block-ink: #8a4d5c;
+  --focus: #2e7de9;
+  --card: #e9e9ed;
+  --card-on: #c9d9f6;
+  --mix-open: #b07d8a;
+  --mix-nr: #a8946e;
+  --mix-na: #7d93b8;
+  --mix-naf: #7d9a84;
 }
-#checklist-console[data-theme="dark"] {
-  --bg: #12141a; --surface: #1c1f27; --ink: #f2f3f5; --muted: #c2c7d1; --line: #323743;
-  --bar: #1c1f27; --bar-ink: #f2f3f5; --ready-bg: #1e3328; --ready-ink: #b7d7c4;
-  --block-bg: #4a2a26; --block-ink: #f0b4ac; --focus: #f2f3f5;
+#sitrep[data-theme="dark"] {
+  --bg: #1a1b26;
+  --surface: #24283b;
+  --ink: #c0caf5;
+  --muted: #a9b1d6;
+  --line: #3b4261;
+  --bar: #16161e;
+  --bar-ink: #c0caf5;
+  --ready-bg: #24302c;
+  --ready-ink: #8aa892;
+  --block-bg: #33282c;
+  --block-ink: #c4a0a8;
+  --focus: #7aa2f7;
+  --card: #292e42;
+  --card-on: #2f406e;
+  --mix-open: #8d6670;
+  --mix-nr: #8a7b5c;
+  --mix-na: #6a7894;
+  --mix-naf: #6d8474;
 }
-#checklist-console[data-style="paper"] { --font: "Iowan Old Style", Palatino, Georgia, serif; --radius: 0; --pad: 10px 12px; }
-#checklist-console[data-style="paper"]:not([data-theme]),
-#checklist-console[data-style="paper"][data-theme="light"] {
-  --bg: #f4f1ea; --surface: #fffdf8; --ink: #1c1915; --muted: #514a40; --line: #ddd6c8;
-  --bar: #1c1915; --bar-ink: #f4f1ea; --focus: #f4f1ea;
-}
-@media (prefers-color-scheme: dark) {
-  #checklist-console[data-style="paper"]:not([data-theme]) {
-    --bg: #1c1915; --surface: #2a261f; --ink: #f4f1ea; --muted: #c4bbaa; --line: #3d3830;
-    --bar: #141210; --bar-ink: #f4f1ea; --ready-bg: #1e3328; --ready-ink: #b7d7c4;
-    --block-bg: #4a2a26; --block-ink: #f0b4ac; --focus: #f4f1ea;
-  }
-}
-#checklist-console[data-style="paper"][data-theme="dark"] {
-  --bg: #1c1915; --surface: #2a261f; --ink: #f4f1ea; --muted: #c4bbaa; --line: #3d3830;
-  --bar: #141210; --bar-ink: #f4f1ea; --ready-bg: #1e3328; --ready-ink: #b7d7c4;
-  --block-bg: #4a2a26; --block-ink: #f0b4ac; --focus: #f4f1ea;
-}
-#checklist-console[data-style="signal"] { --radius: 8px; --pad: 12px 14px; }
-#checklist-console[data-style="signal"]:not([data-theme]),
-#checklist-console[data-style="signal"][data-theme="light"] {
-  --bg: #f2f5f7; --surface: #ffffff; --ink: #172026; --muted: #3e515a; --line: #d3dee3;
-  --bar: #17323c; --bar-ink: #f2f5f7; --focus: #9fd0de;
-}
-@media (prefers-color-scheme: dark) {
-  #checklist-console[data-style="signal"]:not([data-theme]) {
-    --bg: #0f161a; --surface: #182226; --ink: #e7eef1; --muted: #b7c6cd; --line: #2c3a40;
-    --bar: #0c1418; --bar-ink: #e7eef1; --ready-bg: #1e3328; --ready-ink: #b7d7c4;
-    --block-bg: #4a2a26; --block-ink: #f0b4ac; --focus: #9fd0de;
-  }
-}
-#checklist-console[data-style="signal"][data-theme="dark"] {
-  --bg: #0f161a; --surface: #182226; --ink: #e7eef1; --muted: #b7c6cd; --line: #2c3a40;
-  --bar: #0c1418; --bar-ink: #e7eef1; --ready-bg: #1e3328; --ready-ink: #b7d7c4;
-  --block-bg: #4a2a26; --block-ink: #f0b4ac; --focus: #9fd0de;
-}
-#checklist-console * { box-sizing: border-box; }
-#checklist-console .cc-sr {
+#sitrep * { box-sizing: border-box; }
+#sitrep .cc-sr {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
   clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
 }
-#checklist-console .cc-bar {
+#sitrep .cc-bar {
   background: var(--bar); color: var(--bar-ink);
   display: flex; flex-wrap: wrap; gap: 12px 20px; justify-content: space-between; align-items: flex-end;
   padding: 14px 16px; border-bottom: 1px solid var(--line);
 }
-#checklist-console .cc-mark { margin: 0; font-size: 0.78rem; }
-#checklist-console .cc-bar h1 { margin: 0; font-size: 1.35rem; font-weight: 500; }
-#checklist-console .cc-choices { display: flex; flex-wrap: wrap; gap: 8px; }
-#checklist-console .cc-choice {
-  display: flex; border: 1px solid color-mix(in srgb, var(--bar-ink) 35%, transparent);
-  border-radius: var(--radius); overflow: hidden;
+#sitrep .cc-mark { margin: 0; font-size: 0.78rem; color: color-mix(in srgb, var(--bar-ink) 72%, transparent); }
+#sitrep .cc-bar h1 { margin: 0; font-size: 1.35rem; font-weight: 500; line-height: 1.2; }
+#sitrep .cc-choice {
+  display: flex; border: 1px solid color-mix(in srgb, var(--bar-ink) 35%, transparent); border-radius: 8px; overflow: hidden;
 }
-#checklist-console .cc-choice button {
+#sitrep .cc-choice button {
   background: transparent; color: var(--bar-ink); border: 0;
   border-right: 1px solid color-mix(in srgb, var(--bar-ink) 25%, transparent);
   font: inherit; font-size: 0.85rem; padding: 6px 10px; cursor: pointer;
 }
-#checklist-console .cc-choice button:last-child { border-right: 0; }
-#checklist-console .cc-choice button[aria-pressed="true"] {
+#sitrep .cc-choice button:last-child { border-right: 0; }
+#sitrep .cc-choice button[aria-pressed="true"] {
   background: color-mix(in srgb, var(--bar-ink) 16%, transparent); font-weight: 500;
 }
-#checklist-console button:focus-visible, #checklist-console input:focus-visible, #checklist-console tr:focus-visible {
+#sitrep button:focus-visible, #sitrep tr:focus-visible {
   outline: 2px solid var(--focus); outline-offset: 2px;
 }
-#checklist-console .cc-body { padding: 16px; }
-#checklist-console .cc-filters {
-  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-bottom: 8px;
+#sitrep .cc-body { padding: 16px; }
+#sitrep .cc-groups { margin-bottom: 12px; }
+#sitrep .cc-summaries { display: flex; flex-wrap: wrap; gap: 8px; }
+#sitrep .cc-summary {
+  background: var(--card); color: var(--ink); border: 1px solid var(--line); border-radius: 8px;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+  min-width: 8.5rem; padding: 8px 12px; cursor: pointer; font: inherit; text-align: left;
 }
-#checklist-console label { display: flex; flex-direction: column; gap: 4px; color: var(--muted); font-size: 0.78rem; }
-#checklist-console input {
-  background: var(--surface); color: var(--ink); border: 1px solid var(--line);
-  border-radius: var(--radius); font: inherit; font-size: 0.95rem; padding: 8px 10px; width: 100%;
+#sitrep .cc-summary small { color: var(--muted); font-size: 0.72rem; }
+#sitrep .cc-summary[aria-expanded="true"] { border-color: var(--focus); background: var(--card-on); }
+#sitrep .cc-summary[aria-expanded="true"] small { color: var(--ink); }
+#sitrep .cc-panel { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+#sitrep .cc-panel[hidden] { display: none; }
+#sitrep .cc-card {
+  background: var(--card); color: var(--ink); border: 1px solid var(--line); border-radius: 8px;
+  min-width: 7.5rem; padding: 8px 12px; text-align: left; cursor: pointer; font: inherit;
 }
-#checklist-console .cc-count, #checklist-console .cc-source { margin: 0 0 8px; color: var(--muted); font-size: 0.85rem; }
-#checklist-console .cc-table-wrap { overflow-x: auto; }
-#checklist-console table { width: 100%; border-collapse: collapse; background: var(--surface); }
-#checklist-console th, #checklist-console td { border-bottom: 1px solid var(--line); padding: var(--pad); text-align: left; vertical-align: top; }
-#checklist-console th { color: var(--muted); font-size: 0.78rem; font-weight: 500; }
-#checklist-console .cc-num { text-align: right; font-variant-numeric: tabular-nums; }
-#checklist-console tbody tr { cursor: pointer; }
-#checklist-console tbody tr[aria-selected="true"] { background: color-mix(in srgb, var(--ink) 6%, var(--surface)); }
-#checklist-console .cc-state { display: inline-block; border-radius: var(--radius); font-size: 0.78rem; font-weight: 500; padding: 2px 8px; }
-#checklist-console .cc-ready { background: var(--ready-bg); color: var(--ready-ink); }
-#checklist-console .cc-blocked { background: var(--block-bg); color: var(--block-ink); }
-#checklist-console .cc-detail {
-  margin-top: 16px; background: var(--surface); border: 1px solid var(--line);
-  border-radius: var(--radius); padding: 12px 14px;
+#sitrep .cc-card strong { display: block; font-weight: 500; }
+#sitrep .cc-card span { color: var(--muted); font-size: 0.78rem; font-variant-numeric: tabular-nums; }
+#sitrep .cc-card span.cc-rel,
+#sitrep .cc-summary span.cc-rel { color: var(--ink); font-weight: 500; }
+#sitrep .cc-card[aria-pressed="true"] { background: var(--card-on); border-color: var(--focus); }
+#sitrep .cc-card[aria-pressed="true"] span { color: var(--ink); }
+#sitrep .cc-toolbar { display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+#sitrep .cc-count, #sitrep .cc-source { margin: 0; color: var(--muted); font-size: 0.85rem; }
+#sitrep .cc-legend { display: flex; flex-wrap: wrap; gap: 8px 12px; list-style: none; margin: 0 0 12px; padding: 0; color: var(--muted); font-size: 0.78rem; }
+#sitrep .cc-hostcard .cc-mix { margin-top: 8px; }
+#sitrep .cc-legend li { display: flex; align-items: center; gap: 6px; }
+#sitrep .cc-swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+#sitrep .cc-swatch.cc-mix-open { background: var(--mix-open); }
+#sitrep .cc-swatch.cc-mix-nr { background: var(--mix-nr); }
+#sitrep .cc-swatch.cc-mix-na { background: var(--mix-na); }
+#sitrep .cc-swatch.cc-mix-naf { background: var(--mix-naf); }
+#sitrep .cc-mix { display: flex; height: 4px; width: 100%; background: var(--line); border-radius: 2px; overflow: hidden; }
+#sitrep .cc-mix span { display: block; height: 100%; }
+#sitrep .cc-mix-open { background: var(--mix-open); }
+#sitrep .cc-mix-nr { background: var(--mix-nr); }
+#sitrep .cc-mix-na { background: var(--mix-na); }
+#sitrep .cc-mix-naf { background: var(--mix-naf); }
+#sitrep tr.cc-mixrow td { padding: 0 10px 6px; border-bottom: 1px solid var(--line); }
+#sitrep .cc-qcell { display: flex; flex-direction: column; gap: 6px; min-width: 11rem; }
+#sitrep .cc-board { display: grid; grid-template-columns: 1.4fr 1fr 0.8fr; gap: 12px; align-items: start; }
+#sitrep .cc-column { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+#sitrep .cc-column h2 { margin: 0 0 8px; font-size: 0.92rem; font-weight: 500; }
+#sitrep .cc-column h2 span { color: var(--muted); }
+#sitrep .cc-hostcard {
+  display: block; width: 100%; text-align: left; font: inherit; color: var(--ink);
+  background: transparent; border: 0; border-top: 1px solid var(--line); border-radius: 0; padding: 8px 0 10px; cursor: pointer;
 }
-#checklist-console .cc-detail h2 { margin: 0 0 4px; font-size: 1.05rem; font-weight: 500; }
-#checklist-console .cc-detail p { margin: 0 0 8px; }
-#checklist-console .cc-path { font-family: ui-monospace, monospace; font-size: 0.78rem; color: var(--muted); }
-#checklist-console .cc-lines { list-style: none; margin: 0; padding: 0; }
-#checklist-console .cc-lines li { border-top: 1px solid var(--line); padding: 8px 0; }
+#sitrep .cc-hostcard strong { display: block; font-weight: 500; }
+#sitrep .cc-hostcard small { color: var(--muted); }
+#sitrep .cc-hostcard[aria-selected="true"] { background: color-mix(in srgb, var(--focus) 18%, var(--surface)); }
+#sitrep .cc-table-wrap { overflow-x: auto; }
+#sitrep table { width: 100%; border-collapse: collapse; background: var(--surface); }
+#sitrep th, #sitrep td { border-bottom: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+#sitrep th { color: var(--muted); font-size: 0.78rem; font-weight: 500; }
+#sitrep .cc-num { text-align: right; font-variant-numeric: tabular-nums; }
+#sitrep tbody tr { cursor: pointer; }
+#sitrep tbody tr[aria-selected="true"] { background: color-mix(in srgb, var(--focus) 18%, var(--surface)); }
+#sitrep .cc-state { display: inline-block; border-radius: 8px; font-size: 0.78rem; font-weight: 500; padding: 2px 8px; }
+#sitrep .cc-ready { background: var(--ready-bg); color: var(--ready-ink); }
+#sitrep .cc-blocked { background: var(--block-bg); color: var(--block-ink); }
+#sitrep .cc-detail {
+  margin-top: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px;
+}
+#sitrep .cc-detail h2 { margin: 0 0 4px; font-size: 1.05rem; font-weight: 500; }
+#sitrep .cc-detail p { margin: 0 0 8px; }
+#sitrep .cc-path { font-family: ui-monospace, monospace; font-size: 0.78rem; color: var(--muted); }
+#sitrep .cc-lines { list-style: none; margin: 0; padding: 0; }
+#sitrep .cc-lines li { border-top: 1px solid var(--line); padding: 8px 0; }
 @media (max-width: 720px) {
-  #checklist-console .cc-filters { grid-template-columns: 1fr 1fr; }
-  #checklist-console table, #checklist-console thead, #checklist-console tbody, #checklist-console tr, #checklist-console th, #checklist-console td { display: block; width: 100%; }
-  #checklist-console thead { height: 1px; overflow: hidden; position: absolute; width: 1px; }
-  #checklist-console tr { border-bottom: 1px solid var(--line); padding: 8px 0; }
-  #checklist-console td { border: 0; display: flex; justify-content: space-between; gap: 12px; text-align: right; }
-  #checklist-console td::before { content: attr(data-label); color: var(--muted); font-size: 0.78rem; }
+  #sitrep .cc-board { grid-template-columns: 1fr; }
+  #sitrep table, #sitrep thead, #sitrep tbody, #sitrep tr, #sitrep th, #sitrep td { display: block; width: 100%; }
+  #sitrep thead { height: 1px; overflow: hidden; position: absolute; width: 1px; }
+  #sitrep tr { border-bottom: 1px solid var(--line); padding: 8px 0; }
+  #sitrep td { border: 0; display: flex; justify-content: space-between; gap: 12px; text-align: right; }
+  #sitrep td::before { content: attr(data-label); color: var(--muted); font-size: 0.78rem; }
 }
 </style>
 </head>
 <body>
-<div id="checklist-console" data-style="inventory">
-  <p class="cc-sr">Posture read from checklist files. Filter by host, quarter, benchmark, and major OS. Theme follows the browser until you choose light or dark.</p>
+<div id="sitrep">
+  <p class="cc-sr">Sitrep reads checklist files, newest quarter first. Choose a filter card for host, quarter, benchmark, or major OS. Theme follows the browser until you choose light or dark.</p>
   <header class="cc-bar">
     <div>
-      <p class="cc-mark">Checklist console</p>
-      <h1>Posture</h1>
+      <p class="cc-mark" id="cc-session"></p>
+      <h1 id="cc-domain"></h1>
     </div>
-    <div class="cc-choices">
-      <div class="cc-choice" role="group" aria-label="Appearance">
-        <button type="button" data-theme-choice="system" aria-pressed="true">System</button>
-        <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
-        <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
-      </div>
-      <div class="cc-choice" role="group" aria-label="Style">
-        <button type="button" data-style-choice="paper" aria-pressed="false">Paper</button>
-        <button type="button" data-style-choice="inventory" aria-pressed="true">Inventory</button>
-        <button type="button" data-style-choice="signal" aria-pressed="false">Signal</button>
-      </div>
+    <div class="cc-choice" role="group" aria-label="Appearance">
+      <button type="button" data-theme-choice="system" aria-pressed="true">System</button>
+      <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+      <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
     </div>
   </header>
   <div class="cc-body">
-    <form class="cc-filters" id="cc-filters">
-      <label>Host <input id="cc-host" type="search" autocomplete="off" placeholder="rhel9-node1"></label>
-      <label>Quarter <input id="cc-quarter" type="search" autocomplete="off" placeholder="2026 Q4"></label>
-      <label>Benchmark <input id="cc-benchmark" type="search" autocomplete="off" placeholder="RHEL 9"></label>
-      <label>Major OS <input id="cc-os" type="search" autocomplete="off" placeholder="IOS-XE"></label>
-    </form>
+    <div class="cc-groups" id="cc-groups"></div>
     <p class="cc-source" id="cc-source"></p>
-    <p class="cc-count" id="cc-count" role="status">Reading checklists.</p>
-    <p class="cc-empty" id="cc-empty" hidden>No checklists match. Clear a field to widen the list.</p>
+    <div class="cc-toolbar">
+      <p class="cc-count" id="cc-count" role="status">Reading checklists.</p>
+      <div class="cc-choice" role="group" aria-label="Layout">
+        <button type="button" data-view="list" aria-pressed="true">List</button>
+        <button type="button" data-view="compare" aria-pressed="false">Compare</button>
+        <button type="button" data-view="attention" aria-pressed="false">Attention</button>
+      </div>
+    </div>
+    <ul class="cc-legend" aria-label="Status mix">
+      <li><i class="cc-swatch cc-mix-open" aria-hidden="true"></i> Open</li>
+      <li><i class="cc-swatch cc-mix-nr" aria-hidden="true"></i> Not reviewed</li>
+      <li><i class="cc-swatch cc-mix-na" aria-hidden="true"></i> Not applicable</li>
+      <li><i class="cc-swatch cc-mix-naf" aria-hidden="true"></i> Not a finding</li>
+    </ul>
+    <p class="cc-empty" id="cc-empty" hidden>No checklists match. Choose a card again to clear that filter.</p>
     <div class="cc-table-wrap" id="cc-table-wrap" hidden>
       <table>
         <thead>
@@ -194,28 +246,36 @@ body { margin: 0; }
         <tbody id="cc-rows"></tbody>
       </table>
     </div>
+    <div id="cc-compare" hidden></div>
+    <div id="cc-attention" hidden></div>
     <section class="cc-detail" id="cc-detail" aria-live="polite" aria-label="Selected checklist" hidden></section>
   </div>
 </div>
 <script>
 (function () {
-  var root = document.getElementById("checklist-console");
+  var root = document.getElementById("sitrep");
+  var groupsEl = document.getElementById("cc-groups");
   var rowsEl = document.getElementById("cc-rows");
   var detail = document.getElementById("cc-detail");
   var countEl = document.getElementById("cc-count");
   var emptyEl = document.getElementById("cc-empty");
   var wrapEl = document.getElementById("cc-table-wrap");
   var sourceEl = document.getElementById("cc-source");
-  var fields = {
-    host: document.getElementById("cc-host"),
-    quarter: document.getElementById("cc-quarter"),
-    benchmark: document.getElementById("cc-benchmark"),
-    os: document.getElementById("cc-os")
-  };
   var records = [];
   var selected = "";
   var themeChoice = "system";
+  var filters = { quarter: "", os: "", benchmark_label: "", host: "" };
+  var openGroup = "";
+  var view = "list";
+  var compareEl = document.getElementById("cc-compare");
+  var attentionEl = document.getElementById("cc-attention");
   var media = window.matchMedia("(prefers-color-scheme: dark)");
+  var groups = [
+    { key: "quarter", label: "Quarter" },
+    { key: "os", label: "Major OS" },
+    { key: "benchmark_label", label: "Benchmark" },
+    { key: "host", label: "Host" }
+  ];
 
   function dash(value) { return value === null || value === undefined ? "—" : String(value); }
   function openText(row) {
@@ -232,17 +292,6 @@ body { margin: 0; }
       button.setAttribute("aria-pressed", button.getAttribute(attr) === value ? "true" : "false");
     });
   }
-  function matches(row) {
-    return [
-      ["host", row.host],
-      ["quarter", row.quarter],
-      ["benchmark", row.benchmark],
-      ["os", row.os]
-    ].every(function (pair) {
-      var query = fields[pair[0]].value.trim().toLowerCase();
-      return !query || String(pair[1]).toLowerCase().indexOf(query) !== -1;
-    });
-  }
   function recordById(id) {
     return records.filter(function (row) { return row.id === id; })[0];
   }
@@ -254,7 +303,7 @@ body { margin: 0; }
     var title = document.createElement("h2");
     title.textContent = row.host + " · " + row.benchmark;
     var meta = document.createElement("p");
-    meta.textContent = [row.quarter, row.os, row.handoff, row.identity].filter(Boolean).join(" · ");
+    meta.textContent = [row.quarter, row.os, row.release, row.handoff, row.identity].filter(Boolean).join(" · ");
     detail.appendChild(title);
     detail.appendChild(meta);
     if (row.path) {
@@ -274,15 +323,46 @@ body { margin: 0; }
   }
   function select(id) {
     selected = id;
-    Array.prototype.forEach.call(rowsEl.children, function (tr) {
-      tr.setAttribute("aria-selected", tr.getAttribute("data-id") === id ? "true" : "false");
+    root.querySelectorAll("[data-select]").forEach(function (el) {
+      el.setAttribute("aria-selected", el.getAttribute("data-select") === id ? "true" : "false");
     });
     renderDetail();
+  }
+  function mixBar(row) {
+    if (row.open === null) return null;
+    var parts = [
+      ["cc-mix-open", row.open],
+      ["cc-mix-nr", row.not_reviewed],
+      ["cc-mix-na", row.not_applicable],
+      ["cc-mix-naf", row.not_a_finding]
+    ];
+    var total = parts.reduce(function (sum, part) { return sum + part[1]; }, 0);
+    if (!total) return null;
+    var bar = document.createElement("div");
+    bar.className = "cc-mix";
+    bar.setAttribute("role", "img");
+    bar.setAttribute("aria-label", "Open " + row.open + ", not reviewed " + row.not_reviewed + ", not applicable " + row.not_applicable + ", not a finding " + row.not_a_finding);
+    parts.forEach(function (part) {
+      if (!part[1]) return;
+      var seg = document.createElement("span");
+      seg.className = part[0];
+      seg.style.width = (part[1] / total * 100).toFixed(2) + "%";
+      bar.appendChild(seg);
+    });
+    return bar;
+  }
+  function bindSelect(el, id) {
+    el.setAttribute("data-select", id);
+    el.addEventListener("click", function () { select(id); });
+    el.addEventListener("keydown", function (event) {
+      if (event.key === "Enter" || event.key === " ") { event.preventDefault(); select(id); }
+    });
   }
   function renderRows() {
     rowsEl.replaceChildren();
     records.forEach(function (row) {
       var tr = document.createElement("tr");
+      tr.className = "cc-main";
       tr.tabIndex = 0;
       tr.setAttribute("data-id", row.id);
       tr.setAttribute("aria-selected", "false");
@@ -294,59 +374,304 @@ body { margin: 0; }
         if (index >= 5) td.className = "cc-num";
         if (index === 4) {
           var chip = document.createElement("span");
-          chip.className = "cc-state " + stateClass(value);
+          chip.className = "cc-state " + (value === "Ready" ? "cc-ready" : "cc-blocked");
           chip.textContent = value;
           td.appendChild(chip);
         } else td.textContent = value;
         tr.appendChild(td);
       });
-      tr.addEventListener("click", function () { select(row.id); });
-      tr.addEventListener("keydown", function (event) {
-        if (event.key === "Enter" || event.key === " ") { event.preventDefault(); select(row.id); }
-      });
+      bindSelect(tr, row.id);
       rowsEl.appendChild(tr);
+      var mix = mixBar(row);
+      if (mix) {
+        var mixRow = document.createElement("tr");
+        mixRow.className = "cc-mixrow";
+        mixRow.setAttribute("data-id", row.id);
+        mixRow.setAttribute("aria-hidden", "true");
+        var cell = document.createElement("td");
+        cell.colSpan = 10;
+        cell.appendChild(mix);
+        mixRow.appendChild(cell);
+        rowsEl.appendChild(mixRow);
+      }
     });
+  }
+  function pairKey(row) { return row.host + "\0" + row.benchmark_id; }
+  function quarterIds() {
+    var seen = [];
+    records.forEach(function (row) {
+      if (seen.indexOf(row.quarter_id) === -1) seen.push(row.quarter_id);
+    });
+    return seen.sort().reverse();
+  }
+  function renderCompare(visible) {
+    compareEl.replaceChildren();
+    var heading = document.createElement("h2");
+    heading.className = "cc-sr";
+    heading.textContent = "Quarters side by side";
+    compareEl.appendChild(heading);
+    var quarters = quarterIds();
+    var keys = [];
+    visible.forEach(function (row) {
+      var key = pairKey(row);
+      if (keys.indexOf(key) === -1) keys.push(key);
+    });
+    var table = document.createElement("table");
+    var thead = document.createElement("thead");
+    var head = document.createElement("tr");
+    ["Host", "Benchmark"].concat(quarters.map(function (id) {
+      return records.filter(function (row) { return row.quarter_id === id; })[0].quarter;
+    })).forEach(function (label) {
+      var th = document.createElement("th");
+      th.textContent = label;
+      head.appendChild(th);
+    });
+    thead.appendChild(head);
+    table.appendChild(thead);
+    var body = document.createElement("tbody");
+    keys.forEach(function (key) {
+      var members = records.filter(function (row) { return pairKey(row) === key; });
+      var sample = members[0];
+      var tr = document.createElement("tr");
+      tr.tabIndex = 0;
+      var newest = members.slice().sort(function (a, b) { return a.quarter_id < b.quarter_id ? 1 : -1; })[0];
+      bindSelect(tr, newest.id);
+      [sample.host, sample.benchmark].forEach(function (value) {
+        var td = document.createElement("td");
+        td.textContent = value;
+        tr.appendChild(td);
+      });
+      quarters.forEach(function (id) {
+        var td = document.createElement("td");
+        var row = members.filter(function (item) { return item.quarter_id === id; })[0];
+        var cell = document.createElement("div");
+        cell.className = "cc-qcell";
+        if (!row) {
+          cell.textContent = "—";
+        } else {
+          var line = document.createElement("div");
+          var chip = document.createElement("span");
+          chip.className = "cc-state " + stateClass(row.handoff);
+          chip.textContent = row.handoff;
+          line.appendChild(chip);
+          line.appendChild(document.createTextNode(" " + openText(row) + (row.changed ? " · " + row.changed + " changed" : "")));
+          cell.appendChild(line);
+          var bar = mixBar(row);
+          if (bar) cell.appendChild(bar);
+        }
+        td.appendChild(cell);
+        tr.appendChild(td);
+      });
+      body.appendChild(tr);
+    });
+    table.appendChild(body);
+    var wrap = document.createElement("div");
+    wrap.className = "cc-table-wrap";
+    wrap.appendChild(table);
+    compareEl.appendChild(wrap);
+  }
+  function renderAttention(visible) {
+    attentionEl.replaceChildren();
+    var latest = visible.map(function (row) { return row.quarter_id; }).sort().reverse()[0];
+    var rows = visible.filter(function (row) { return row.quarter_id === latest; });
+    var label = rows[0] ? rows[0].quarter : "";
+    var board = document.createElement("div");
+    board.className = "cc-board";
+    ["Ready", "Blocked", "Missing"].forEach(function (state) {
+      var column = document.createElement("div");
+      column.className = "cc-column";
+      var items = rows.filter(function (row) { return row.handoff === state; });
+      var title = document.createElement("h2");
+      title.textContent = label + " " + state + " ";
+      var count = document.createElement("span");
+      count.textContent = String(items.length);
+      title.appendChild(count);
+      column.appendChild(title);
+      items.forEach(function (row) {
+        var button = document.createElement("button");
+        button.type = "button";
+        button.className = "cc-hostcard";
+        bindSelect(button, row.id);
+        var name = document.createElement("strong");
+        name.textContent = row.host;
+        var meta = document.createElement("small");
+        var changed = row.changed ? row.changed + " changed" : "unchanged";
+        meta.textContent = row.benchmark + " · " + (row.open === null ? "no checklist" : openText(row) + " · " + changed);
+        button.appendChild(name);
+        button.appendChild(meta);
+        var bar = mixBar(row);
+        if (bar) button.appendChild(bar);
+        column.appendChild(button);
+      });
+      board.appendChild(column);
+    });
+    attentionEl.appendChild(board);
+  }
+  function visibleRecords() { return records.filter(matches); }
+  function showViews(shown) {
+    emptyEl.hidden = shown !== 0;
+    wrapEl.hidden = view !== "list" || shown === 0;
+    compareEl.hidden = view !== "compare" || shown === 0;
+    attentionEl.hidden = view !== "attention" || shown === 0;
   }
   function applyFilter() {
     var shown = 0;
-    Array.prototype.forEach.call(rowsEl.children, function (tr) {
+    rowsEl.querySelectorAll("tr[data-id]").forEach(function (tr) {
       var visible = matches(recordById(tr.getAttribute("data-id")));
       tr.hidden = !visible;
-      if (visible) shown += 1;
+      if (tr.classList.contains("cc-main") && visible) shown += 1;
     });
+    var visible = visibleRecords();
     countEl.textContent = "Showing " + shown + " of " + records.length;
-    emptyEl.hidden = shown !== 0;
-    wrapEl.hidden = shown === 0;
-    var current = rowsEl.querySelector('[data-id="' + selected + '"]');
+    if (view === "compare") renderCompare(visible);
+    if (view === "attention") renderAttention(visible);
+    showViews(shown);
+    var current = rowsEl.querySelector('tr.cc-main[data-id="' + selected + '"]');
     if (!current || current.hidden) {
-      var next = Array.prototype.find.call(rowsEl.children, function (tr) { return !tr.hidden; });
+      var next = Array.prototype.find.call(rowsEl.querySelectorAll("tr.cc-main"), function (tr) { return !tr.hidden; });
       if (next) select(next.getAttribute("data-id"));
       else { selected = ""; renderDetail(); }
-    }
+    } else select(selected);
   }
+  function matches(row) { return matchesRow(row, ""); }
+  function matchesRow(row, ignore) {
+    return groupsKeys().every(function (key) {
+      if (key === ignore) return true;
+      return !filters[key] || row[key] === filters[key];
+    });
+  }
+  function groupsKeys() { return groups.map(function (group) { return group.key; }); }
   root.querySelectorAll("[data-theme-choice]").forEach(function (button) {
     button.addEventListener("click", function () {
       themeChoice = button.getAttribute("data-theme-choice");
-      setPressed("[data-theme-choice]", "data-theme-choice", themeChoice);
+      root.querySelectorAll("[data-theme-choice]").forEach(function (item) {
+        item.setAttribute("aria-pressed", item === button ? "true" : "false");
+      });
       applyTheme();
     });
   });
-  root.querySelectorAll("[data-style-choice]").forEach(function (button) {
+  media.addEventListener("change", function () { if (themeChoice === "system") applyTheme(); });
+  root.querySelectorAll("[data-view]").forEach(function (button) {
     button.addEventListener("click", function () {
-      var style = button.getAttribute("data-style-choice");
-      root.setAttribute("data-style", style);
-      setPressed("[data-style-choice]", "data-style-choice", style);
+      view = button.getAttribute("data-view");
+      root.querySelectorAll("[data-view]").forEach(function (item) {
+        item.setAttribute("aria-pressed", item === button ? "true" : "false");
+      });
+      applyFilter();
     });
   });
-  Object.keys(fields).forEach(function (key) { fields[key].addEventListener("input", applyFilter); });
-  media.addEventListener("change", function () { if (themeChoice === "system") applyTheme(); });
+
+  function splitRelease(value) {
+    var match = /^(.*) (V\d+R\d+)$/.exec(value || "");
+    if (!match) return { name: value || "", release: "" };
+    return { name: match[1], release: match[2] };
+  }
+  function uniqueValues(key) {
+    var seen = [];
+    records.forEach(function (row) {
+      if (seen.indexOf(row[key]) === -1) seen.push(row[key]);
+    });
+    if (key === "quarter") {
+      return seen.sort(function (a, b) {
+        var left = records.filter(function (row) { return row.quarter === a; })[0].quarter_id;
+        var right = records.filter(function (row) { return row.quarter === b; })[0].quarter_id;
+        return left < right ? 1 : left > right ? -1 : 0;
+      });
+    }
+    return seen.sort();
+  }
+  function renderCards() {
+    groupsEl.replaceChildren();
+    var summaries = document.createElement("div");
+    summaries.className = "cc-summaries";
+    groups.forEach(function (group) {
+      var button = document.createElement("button");
+      button.type = "button";
+      button.className = "cc-summary";
+      button.setAttribute("aria-expanded", openGroup === group.key ? "true" : "false");
+      var label = document.createElement("small");
+      label.textContent = group.label;
+      var chosen = filters[group.key] || "";
+      var summary = group.key === "benchmark_label" && chosen ? splitRelease(chosen) : { name: chosen || "All", release: "" };
+      var value = document.createElement("strong");
+      value.textContent = summary.name || "All";
+      button.appendChild(label);
+      button.appendChild(value);
+      if (summary.release) {
+        var release = document.createElement("span");
+        release.className = "cc-rel";
+        release.textContent = summary.release;
+        button.appendChild(release);
+      }
+      button.addEventListener("click", function () {
+        openGroup = openGroup === group.key ? "" : group.key;
+        renderCards();
+      });
+      summaries.appendChild(button);
+    });
+    groupsEl.appendChild(summaries);
+    if (!openGroup) return;
+    var group = groups.filter(function (item) { return item.key === openGroup; })[0];
+    var panel = document.createElement("div");
+    panel.className = "cc-panel cc-cards";
+    panel.setAttribute("role", "group");
+    panel.setAttribute("aria-label", group.label);
+    uniqueValues(group.key).forEach(function (value) {
+      var count = records.filter(function (row) {
+        return row[group.key] === value && matchesRow(row, group.key);
+      }).length;
+      var button = document.createElement("button");
+      button.type = "button";
+      button.className = "cc-card";
+      button.setAttribute("aria-pressed", filters[group.key] === value ? "true" : "false");
+      var parts = group.key === "benchmark_label" ? splitRelease(value) : { name: value, release: "" };
+      var name = document.createElement("strong");
+      name.textContent = parts.name;
+      button.appendChild(name);
+      var meta = document.createElement("span");
+      if (parts.release) {
+        var release = document.createElement("span");
+        release.className = "cc-rel";
+        release.textContent = parts.release;
+        meta.appendChild(release);
+        meta.appendChild(document.createTextNode(" · " + count));
+      } else {
+        meta.textContent = String(count);
+      }
+      button.appendChild(meta);
+      button.addEventListener("click", function () {
+        filters[group.key] = filters[group.key] === value ? "" : value;
+        openGroup = "";
+        renderCards();
+        applyFilter();
+      });
+      panel.appendChild(button);
+    });
+    groupsEl.appendChild(panel);
+  }
+
+  fetch("/api/session").then(function (response) {
+    if (!response.ok) throw new Error("status " + response.status);
+    return response.json();
+  }).then(function (session) {
+    document.getElementById("cc-domain").textContent = session.domain || "";
+    document.getElementById("cc-session").textContent = [session.date, session.user].filter(Boolean).join(" · ");
+  }).catch(function () {
+    document.getElementById("cc-domain").textContent = "This network";
+  });
 
   fetch("/api/posture").then(function (response) {
     if (!response.ok) throw new Error("status " + response.status);
     return response.json();
   }).then(function (payload) {
-    records = payload.rows || [];
+    records = (payload.rows || []).slice().sort(function (a, b) {
+      if (a.quarter_id !== b.quarter_id) return a.quarter_id < b.quarter_id ? 1 : -1;
+      if (a.host !== b.host) return a.host < b.host ? -1 : 1;
+      if (a.benchmark !== b.benchmark) return a.benchmark < b.benchmark ? -1 : 1;
+      return 0;
+    });
     sourceEl.textContent = "Reading " + (payload.root || "the checklist tree");
+    renderCards();
     renderRows();
     applyFilter();
   }).catch(function () {
