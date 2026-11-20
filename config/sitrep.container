@@ -1,3 +1,7 @@
+# User quadlet for the scratch image from scripts/build-sitrep.sh.
+# Copy to ~/.config/containers/systemd/sitrep.container.
+# Put the checklist tree at ~/sitrep/completed_ckl, or change the Volume line.
+# Copy config/console.env to ~/sitrep/console.env and set CHECKLIST_DOMAIN there.
 [Container]
 Image=localhost/sitrep:latest
 ContainerName=sitrep

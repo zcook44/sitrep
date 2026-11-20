@@ -35,7 +35,7 @@ if [ ! -d "$data" ]; then
 fi
 
 if [ "${SITREP_BUILD:-}" = "1" ] || ! "$runtime" image inspect "$image" >/dev/null 2>&1; then
-  "$runtime" build -t "$image" "$root"
+  SITREP_RUNTIME="$runtime" SITREP_IMAGE="$image" SITREP_BUILD=1 "$root/scripts/build-sitrep.sh"
 fi
 
 "$runtime" rm -f "$name" >/dev/null 2>&1 || true

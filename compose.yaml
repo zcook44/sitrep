@@ -8,6 +8,7 @@ services:
     ports:
       - "8787:8780"
     volumes:
+      - ./data:/data:ro
       - /run/dbus/system_bus_socket:/run/dbus/system_bus_socket
       - /run/systemd:/run/systemd:ro
       - /etc/localtime:/host/localtime:ro

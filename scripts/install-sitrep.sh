@@ -88,12 +88,7 @@ if [ "$runtime" = podman ]; then
   label=,Z
 fi
 
-if [ "${SITREP_BUILD:-1}" = "1" ]; then
-  "$bin" build -t "$image" "$root"
-elif ! "$bin" image inspect "$image" >/dev/null 2>&1; then
-  echo "sitrep: image $image is not loaded; build it or unset SITREP_BUILD" >&2
-  exit 1
-fi
+SITREP_RUNTIME="$runtime" SITREP_IMAGE="$image" "$root/scripts/build-sitrep.sh"
 
 mkdir -p "$etcdir" "$(dirname "$unit")"
 if [ ! -f "$etcdir/console.env" ]; then
