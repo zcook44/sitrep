@@ -36,17 +36,30 @@ docker compose up --build
 
 2026 Q4 in the demo shows a missing switch, a host with no IP, an incomplete Cisco snapshot, and rule statuses that moved since 2026 Q3.
 
-## Install against a checklist tree
+## Install on a host
 
-`CHECKLIST_DIR` is the tree on the host. The container reads it at `/data`.
+`install-sitrep.sh` builds the image, mounts the checklist tree, and installs a systemd service that starts at boot. Run it as root. The argument is the checklist root. Podman is used when it is installed.
 
 ```sh
-CHECKLIST_DIR=/private/checklists scripts/run-sitrep.sh podman
+sudo scripts/install-sitrep.sh /private/checklists
 ```
 
-`scripts/run-sitrep.sh docker` is the same command. With no argument the script uses podman when it is installed.
+`--runtime docker` selects Docker. `--port` changes the published port. The process inside the container listens on `8780`. The service is `sitrep`:
 
-`config/console.env` sets `CHECKLIST_ROOT=/data`. Set `CHECKLIST_DOMAIN` in that file when the header should name the network.
+```sh
+systemctl status sitrep
+systemctl restart sitrep
+```
+
+The unit is `/etc/systemd/system/sitrep.service`. Settings are `/etc/sitrep/console.env`, copied from `config/console.env` on the first install. Set `CHECKLIST_DOMAIN` there when the header should name the network. A later install leaves that file in place.
+
+On a disconnected host, load the image first and skip the build:
+
+```sh
+sudo SITREP_BUILD=0 scripts/install-sitrep.sh /private/checklists
+```
+
+`scripts/run-sitrep.sh` still runs one container in the foreground of the container tool, without installing a service. `CHECKLIST_DIR` is the tree on the host.
 
 ## Disconnected host
 
@@ -61,18 +74,7 @@ Use `podman` the same way (`podman save` and `podman load`). On the disconnected
 
 ```sh
 docker load -i sitrep.tar
-CHECKLIST_DIR=/private/checklists scripts/run-sitrep.sh docker
+sudo SITREP_BUILD=0 scripts/install-sitrep.sh /private/checklists
 ```
 
-Leave `SITREP_BUILD` unset after a load so the host does not try to pull a base image. Set `SITREP_BUILD=1` when you want the script to rebuild. `HOST_PORT` changes the published port. The process inside the container listens on `8780`.
-
-## Podman at login
-
-Copy `config/sitrep.container` to `~/.config/containers/systemd/`. Copy `config/console.env` to `~/sitrep/console.env`. Put the checklist tree at `~/sitrep/completed_ckl/`.
-
-```sh
-systemctl --user daemon-reload
-systemctl --user enable --now sitrep
-```
-
-Build or load the image as `localhost/sitrep:latest` before enabling the unit.
+`podman load` is the same step. `SITREP_BUILD=0` keeps the host from trying to pull a base image.
